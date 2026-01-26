@@ -1,0 +1,9 @@
+services:
+  cms_api:
+    container_name: cms_api
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    command: sh -c "npx prisma migrate deploy && npm run dev"
