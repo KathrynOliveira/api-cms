@@ -1,14 +1,30 @@
 import { Router } from "express";
 import CategoriesController from "../controllers/CategoriesController";
 import authMiddleware from "../middlewares/authMiddleware";
+import { isAdminMiddleware } from "../middlewares/isAdminMiddleware";
 
 const router = Router();
 
-// Proteger todas as rotas deste router:
 router.use(authMiddleware);
-router.post("/api/categories", CategoriesController.createCategory);
-router.put("/api/categories/:id", CategoriesController.editCategory);
+
+// Apenas administradores podem criar, editar e remover categorias:
+router.post(
+  "/api/categories",
+  isAdminMiddleware,
+  CategoriesController.createCategory,
+);
+router.put(
+  "/api/categories/:id",
+  isAdminMiddleware,
+  CategoriesController.editCategory,
+);
+router.delete(
+  "/api/categories/:id",
+  isAdminMiddleware,
+  CategoriesController.removeCategory,
+);
+
+// Qualquer usuário autenticado pode listar categorias:
 router.get("/api/categories", CategoriesController.getAllCategories);
-router.delete("/api/categories/:id", CategoriesController.removeCategory);
 
 export default router;

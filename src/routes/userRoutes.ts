@@ -7,7 +7,7 @@ const router = Router();
 
 // Proteger todas as rotas deste router:
 router.use(authMiddleware);
-router.post("/api/users", userValidation, UserController.createUser);
+router.post("/api/users",  userValidation, UserController.createUser);
 router.get("/api/users/me", UserController.getMe);
 
 export default router;
