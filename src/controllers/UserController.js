@@ -1,44 +1,26 @@
-require("dotenv").config();
-const bcrypt = require("bcrypt");
-const { Pool } = require("pg");
-const { PrismaPg } = require("@prisma/adapter-pg");
-const { PrismaClient, Role } = require("@prisma/client");
-
-// 1. Crie uma instância do pool do pg
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-// 2. Inicialize o adaptador
-const adapter = new PrismaPg(pool);
-
-// 3. Passe o adaptador para o Prisma Client
-const prisma = new PrismaClient({ adapter });
+const userService = require("../services/userService");
 
 module.exports = {
+    // Cria um novo usuário
   async createUser(req, res) {
     try {
       const { name, email, password } = req.body;
       let { role } = req.body;
       if (role) role = role.trim().toUpperCase();
 
-    //   if (!Object.values(Role).includes(role)) {
-    //     return res.status(400).json({
-    //       error: `Role inválido. Deve ser um dos: ${Object.values(Role).join(", ")}`,
-    //     });
-    //   }
-      const userExists = await prisma.user.findUnique({ where: { email } });
+      // Busca usuário existente
+      const userExists = await userService.findUserByEmail(email);
       if (userExists) {
         return res.status(409).json({ error: "E-mail já cadastrado." });
       }
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await prisma.user.create({
-        data: {
-          name,
-          email,
-          password: hashedPassword,
-          role,
-        },
+      // Hash da senha
+      const hashedPassword = await userService.hashPassword(password);
+      // Criação do usuário
+      const user = await userService.createUser({
+        name,
+        email,
+        password: hashedPassword,
+        role,
       });
       return res.status(201).json({
         id: user.id,
@@ -50,6 +32,31 @@ module.exports = {
       return res
         .status(500)
         .json({ error: "Erro ao cadastrar usuário.", details: error.message });
+    }
+  },
+
+    // Retorna os dados do usuário autenticado
+  async getMe(req, res) {
+    try {
+        console.log(req)
+      const userId = req.user.id;
+      const user = await userService.findUserById(userId);
+      if (!user) {
+        return res.status(404).json({ error: "Usuário não encontrado." });
+      }
+      return res.status(200).json({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({
+          error: "Erro ao buscar dados do usuário.",
+          details: error.message,
+        });
     }
   },
 };
