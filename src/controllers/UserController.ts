@@ -1,8 +1,9 @@
-const userService = require("../services/userService");
+import { Request, Response } from "express";
+import * as userService from "../services/userService";
 
-module.exports = {
-    // Cria um novo usuário
-  async createUser(req, res) {
+export default {
+  // Cria um novo usuário
+  async createUser(req: Request, res: Response) {
     try {
       const { name, email, password } = req.body;
       let { role } = req.body;
@@ -28,17 +29,17 @@ module.exports = {
         email: user.email,
         role: user.role,
       });
-    } catch (error) {
+    } catch (error: any) {
       return res
         .status(500)
         .json({ error: "Erro ao cadastrar usuário.", details: error.message });
     }
   },
 
-    // Retorna os dados do usuário autenticado
-  async getMe(req, res) {
+  // Retorna os dados do usuário autenticado
+  async getMe(req: Request, res: Response) {
     try {
-        console.log(req)
+      // @ts-ignore
       const userId = req.user.id;
       const user = await userService.findUserById(userId);
       if (!user) {
@@ -50,13 +51,11 @@ module.exports = {
         email: user.email,
         role: user.role,
       });
-    } catch (error) {
-      return res
-        .status(500)
-        .json({
-          error: "Erro ao buscar dados do usuário.",
-          details: error.message,
-        });
+    } catch (error: any) {
+      return res.status(500).json({
+        error: "Erro ao buscar dados do usuário.",
+        details: error.message,
+      });
     }
   },
 };

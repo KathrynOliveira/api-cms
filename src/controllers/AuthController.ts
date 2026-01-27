@@ -1,7 +1,8 @@
-const authService = require("../services/authService");
+import { Request, Response } from "express";
+import * as authService from "../services/authService";
 
-module.exports = {
-  async auth(req, res) {
+const AuthController = {
+  async auth(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
       if (!email || !password) {
@@ -36,10 +37,12 @@ module.exports = {
         message: "Autenticação bem-sucedida.",
         token,
       });
-    } catch (error) {
+    } catch (error: any) {
       return res
         .status(500)
         .json({ error: "Erro na autenticação.", details: error.message });
     }
   },
 };
+
+export default AuthController;
