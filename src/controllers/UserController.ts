@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as userService from "../services/userService";
+import { error, success } from "../utils/response";
 
 export default {
   // Cria um novo usuário
@@ -12,7 +13,7 @@ export default {
       // Busca usuário existente
       const userExists = await userService.findUserByEmail(email);
       if (userExists) {
-        return res.status(409).json({ error: "E-mail já cadastrado." });
+        return error(res, "E-mail já cadastrado.", undefined, 409);
       }
       // Hash da senha
       const hashedPassword = await userService.hashPassword(password);
@@ -23,16 +24,9 @@ export default {
         password: hashedPassword,
         role,
       });
-      return res.status(201).json({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      });
+      return success(res, "Usuário criado com sucesso.", user, 201);
     } catch (error: any) {
-      return res
-        .status(500)
-        .json({ error: "Erro ao cadastrar usuário.", details: error.message });
+      return error(res, "Erro ao cadastrar usuário.", undefined, 500);
     }
   },
 
@@ -43,19 +37,16 @@ export default {
       const userId = req.user.id;
       const user = await userService.findUserById(userId);
       if (!user) {
-        return res.status(404).json({ error: "Usuário não encontrado." });
+        return error(res, "Usuário não encontrado.", undefined, 404);
       }
-      return res.status(200).json({
+      return success(res, "Dados do usuário recuperados com sucesso.", {
         id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
       });
     } catch (error: any) {
-      return res.status(500).json({
-        error: "Erro ao buscar dados do usuário.",
-        details: error.message,
-      });
+      return error(res, "Erro ao cadastrar usuário.", undefined, 500);
     }
   },
 };

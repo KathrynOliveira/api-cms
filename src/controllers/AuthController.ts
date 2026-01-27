@@ -1,19 +1,28 @@
 import { Request, Response } from "express";
 import * as authService from "../services/authService";
+import { error, success } from "../utils/response";
 
 const AuthController = {
   async auth(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
       if (!email || !password) {
-        return res
-          .status(400)
-          .json({ error: "E-mail e senha são obrigatórios." });
+        return error(
+          res,
+          "E-mail e senha são obrigatórios.",
+          "Erro de Autenticação",
+          400,
+        );
       }
 
       const user = await authService.findUserByEmail(email);
       if (!user) {
-        return res.status(401).json({ error: "Usuário ou senha inválidos." });
+        return error(
+          res,
+          "Usuário ou senha inválidos.",
+          "Erro de Autenticação",
+          401,
+        );
       }
 
       const isPasswordValid = await authService.validatePassword(
@@ -21,7 +30,12 @@ const AuthController = {
         user.password,
       );
       if (!isPasswordValid) {
-        return res.status(401).json({ error: "Usuário ou senha inválidos." });
+        return error(
+          res,
+          "Usuário ou senha inválidos.",
+          "Erro de Autenticação",
+          401,
+        );
       }
 
       const token = authService.generateToken(user);
@@ -33,14 +47,9 @@ const AuthController = {
         maxAge: 3600000, // 1 hora
       });
 
-      return res.status(200).json({
-        message: "Autenticação bem-sucedida.",
-        token,
-      });
+      return success(res, "Autenticação bem-sucedida.", { token }, 200);
     } catch (error: any) {
-      return res
-        .status(500)
-        .json({ error: "Erro na autenticação.", details: error.message });
+      return error(res, "Erro na autenticação.", "Erro de Autenticação", 500);
     }
   },
 };
