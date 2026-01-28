@@ -6,27 +6,16 @@ export default {
   // Cria um novo usuário
   async createUser(req: Request, res: Response) {
     try {
-      const { name, email, password } = req.body;
-      let { role } = req.body;
-      if (role) role = role.trim().toUpperCase();
+      const user = await userService.createUser(req.body);
 
-      // Busca usuário existente
-      const userExists = await userService.findUserByEmail(email);
-      if (userExists) {
-        return error(res, "E-mail já cadastrado.", undefined, 409);
-      }
-      // Hash da senha
-      const hashedPassword = await userService.hashPassword(password);
-      // Criação do usuário
-      const user = await userService.createUser({
-        name,
-        email,
-        password: hashedPassword,
-        role,
-      });
-      return success(res, "Usuário criado com sucesso.", user, 201);
-    } catch (error: any) {
-      return error(res, "Erro ao cadastrar usuário.", undefined, 500);
+      return success(
+        res,
+        "Usuário criado com sucesso.",
+        user,
+        201,
+      );
+    } catch (err: any) {
+      return error(res, err.message, err.details, err.status || 500);
     }
   },
 

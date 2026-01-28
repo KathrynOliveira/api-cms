@@ -6,14 +6,10 @@ const categoryController = {
   // Cria uma nova categoria
   async createCategory(req: Request, res: Response) {
     try {
-      const { title, slug } = req.body;
-      if (!title || !slug) {
-        return error(res, "Título e slug são obrigatórios.", undefined, 400);
-      }
-      const category = await categoryService.createCategory({ title, slug });
+      const category = await categoryService.createCategory(req.body);
       return success(res, "Categoria criada com sucesso.", category, 201);
     } catch (err: any) {
-      return error(res, "Erro ao criar categoria.", err.message);
+      return error(res, err.message, err.details, err.status || 500);
     }
   },
 
@@ -21,11 +17,7 @@ const categoryController = {
   async editCategory(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { title, slug } = req.body;
-      const category = await categoryService.editCategory(String(id), {
-        title,
-        slug,
-      });
+      const category = await categoryService.editCategory(String(id), req.body);
       return success(res, "Categoria editada com sucesso.", category);
     } catch (err: any) {
       return error(res, "Erro ao editar categoria.", err.message);

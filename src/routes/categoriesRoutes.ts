@@ -2,6 +2,8 @@ import { Router } from "express";
 import CategoriesController from "../controllers/CategoriesController";
 import authMiddleware from "../middlewares/authMiddleware";
 import { isAdminMiddleware } from "../middlewares/isAdminMiddleware";
+import categoryValidation from "../middlewares/validations/categoryValidation";
+import { handleValidation } from "../middlewares/validations/handleValidation";
 
 const router = Router();
 
@@ -11,6 +13,8 @@ router.use(authMiddleware);
 router.post(
   "/api/categories",
   isAdminMiddleware,
+  categoryValidation,
+  handleValidation,
   CategoriesController.createCategory,
 );
 router.put(
