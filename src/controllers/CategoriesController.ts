@@ -27,17 +27,10 @@ const categoryController = {
   // Remove uma categoria
   async removeCategory(req: Request, res: Response) {
     try {
-      const { id } = req.params;
-      const existingCategory = await categoryService.findCategoryById(
-        String(id),
-      );
-      if (!existingCategory) {
-        return error(res, "Categoria não encontrada.", undefined, 404);
-      }
-      await categoryService.removeCategory(String(id));
+      await categoryService.removeCategory(String(req.params.id));
       return success(res, "Categoria removida com sucesso.");
     } catch (err: any) {
-      return error(res, "Erro ao remover categoria.", err.message);
+      return error(res, err.message, err.details, err.status || 500);
     }
   },
 
