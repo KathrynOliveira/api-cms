@@ -45,6 +45,15 @@ export async function removeCategory(id: string): Promise<void> {
   if (!category) {
     throw new ApiError("Categoria não encontrada", 404);
   }
+  const hasArticles = await db.articles.count({
+    where: { categoryId: id },
+  });
+  if (hasArticles > 0) {
+    throw new ApiError(
+      "Não é possível remover: existem artigos vinculados a esta categoria.",
+      409,
+    );
+  }
   await db.categories.delete({ where: { id } });
 }
 
