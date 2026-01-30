@@ -7,8 +7,8 @@ const AuthController = {
     try {
       const { user, token } = await authService.login(req.body, res);
       return success(res, "Autenticação bem-sucedida.", { user, token }, 200);
-    } catch (error: any) {
-      return error(res, error.message, error.details, error.status || 500);
+    } catch (err: any) {
+      return error(res, err.message, err.details, err.status || 500);
     }
   },
 };
