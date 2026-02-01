@@ -69,12 +69,16 @@ export async function editArticle(
     title?: string;
     body?: string;
     categoryId?: string;
-    userId?: string;
   },
+  currentUser: { id: string; role: string },
 ): Promise<Articles> {
   const article = await db.articles.findUnique({ where: { id } });
   if (!article) {
     throw new ApiError("Artigo não encontrado", 404);
+  }
+  // Permissão: admin ou autor do artigo
+  if (currentUser.role !== "ADMIN" && currentUser.id !== article.userId) {
+    throw new ApiError("Você não tem permissão para editar este artigo", 403);
   }
 
   // Se for atualizar o título, gere novo slug e verifique unicidade

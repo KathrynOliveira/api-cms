@@ -22,17 +22,8 @@ router.get(
   ArticleController.getArticlesByCategory,
 );
 
-router.put(
-  "/api/articles/:id",
-  isAdminMiddleware,
-  articleValidation,
-  handleValidation,
-  ArticleController.editArticle,
-);
+router.put("/api/articles/:id", ArticleController.editArticle);
 
-router.delete(
-  "/api/articles/:id",
-  ArticleController.removeArticle,
-);
+router.delete("/api/articles/:id", ArticleController.removeArticle);
 
 export default router;
