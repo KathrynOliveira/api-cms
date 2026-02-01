@@ -6,27 +6,27 @@ const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
 // Mock users
 const otherUser = {
-  id: "1f0e59ec-54a9-447e-947a-caa606224109",
-  email: "tom@gmail.com",
+  id: 2,
+  email: "other@example.com",
   role: "AUTHOR",
 };
 const adminUser = {
-  id: "9efdb984-7d8d-4aa5-9dfc-ec15cf216db9",
-  email: "brenda@gmail.com",
+  id: 3,
+  email: "admin@example.com",
   role: "ADMIN",
 };
 const authorUser = {
-  id: "ada202e8-db0f-4aa6-9332-7c5ff3755ae8",
-  email: "k.olliver18@gmail.com",
+  id: 1,
+  email: "email@example.com",
   role: "AUTHOR",
 };
 
 // Mock article
 const article = {
-  id: "e116083d-650e-4609-be6a-924ef8accee5",
-  title: "Moda 2026",
+  id: 1,
+  title: "Original Title",
   body: "Old body content that is long enough to pass validation.",
-  categoryId: "7484a6cc-7e7c-48e3-a7bd-ed65c820e5f8",
+  categoryId: 1,
   userId: authorUser.id,
 };
 
