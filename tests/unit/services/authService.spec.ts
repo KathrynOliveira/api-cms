@@ -9,9 +9,9 @@ jest.mock("../../../src/services/authService", () => ({
 }));
 
 const mockUser = {
-  id: "ada202e8-db0f-4aa6-9332-7c5ff3755ae8",
-  email: "k.olliver18@gmail.com",
-  password: "kathryn1",
+  id: 1,
+  email: "email@example.com",
+  password: "senha",
   role: "AUTHOR",
 };
 
