@@ -16,13 +16,16 @@ const articleController = {
   // Edita um artigo existente
   async editArticle(req: Request, res: Response) {
     try {
+      // @ts-ignore
+      const currentUser = req.user;
       const article = await articleService.editArticle(
         String(req.params.id),
         req.body,
+        currentUser,
       );
       return success(res, "Artigo editado com sucesso.", article);
     } catch (err: any) {
-      return error(res, "Erro ao editar artigo.", err.message);
+      return error(res, err.message, err.details, err.status || 500);
     }
   },
 
