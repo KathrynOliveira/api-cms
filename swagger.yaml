@@ -306,35 +306,6 @@ paths:
                   type: string
                 body:
                   type: string
-                delete:
-                  summary: Remove uma categoria existente
-                  tags:
-                    - Categories
-                  security:
-                    - bearerAuth: []
-                  parameters:
-                    - in: path
-                      name: id
-                      required: true
-                      schema:
-                        type: string
-                  responses:
-                    "200":
-                      description: Categoria removida com sucesso
-                      content:
-                        application/json:
-                          example:
-                            status: success
-                            message: "Categoria removida com sucesso."
-                            data: null
-                    "404":
-                      description: Categoria não encontrada
-                      content:
-                        application/json:
-                          example:
-                            status: error
-                            message: "Categoria não encontrada."
-                            details: null
               properties:
                 title:
                   type: string
