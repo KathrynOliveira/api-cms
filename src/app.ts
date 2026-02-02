@@ -9,7 +9,13 @@ import articleRoutes from "./routes/articleRoutes";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 import path from "path";
-const swaggerDocument = YAML.load(path.join(__dirname, "..", "swagger.yaml"));
+let swaggerDocument;
+try {
+  swaggerDocument = YAML.load(path.join(process.cwd(), "swagger.yaml"));
+  console.log("[Swagger] swagger.yaml carregado com sucesso.");
+} catch (err) {
+  console.error("[Swagger] Erro ao carregar swagger.yaml:", err);
+}
 
 const app = express();
 const port = 3000;
