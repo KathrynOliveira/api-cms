@@ -134,7 +134,7 @@ paths:
                 message: "Acesso não autorizado. Token ausente."
                 details: null
   /categories:
-      get:
+    get:
         summary: Lista todas as categorias
         tags:
           - Categories
@@ -158,7 +158,7 @@ paths:
                         slug: "educacao"
                         cretedAt: "2024-02-01T12:00:00Z"
                         updatedAt: "2024-02-10T12:00:00Z"
-      post:
+    post:
         summary: Cria uma nova categoria
         tags:
           - Categories
@@ -185,34 +185,7 @@ paths:
                     id: "uuid"
                     title: "Saúde"
                     slug: "saude"
-        summary: Remove uma categoria existente
-        tags:
-          - Categories
-        security:
-          - bearerAuth: []
-        parameters:
-          - in: path
-            name: id
-            required: true
-            schema:
-              type: string
-        responses:
-          "200":
-            description: Categoria removida com sucesso
-            content:
-              application/json:
-                example:
-                  status: success
-                  message: "Categoria removida com sucesso."
-                  data: null
-          "404":
-            description: Categoria não encontrada
-            content:
-              application/json:
-                example:
-                  status: error
-                  message: "Categoria não encontrada."
-                  details: null
+    # Remoção de categoria é feita em /categories/{id} (delete)
   /categories/{id}:
     put:
       summary: Edita uma categoria existente
@@ -286,34 +259,7 @@ paths:
                 status: error
                 message: "Categoria não encontrada."
                 details: null
-        summary: Remove um artigo existente
-        tags:
-          - Articles
-        security:
-          - bearerAuth: []
-        parameters:
-          - in: path
-            name: id
-            required: true
-            schema:
-              type: string
-        responses:
-          "200":
-            description: Artigo removido com sucesso
-            content:
-              application/json:
-                example:
-                  status: success
-                  message: "Artigo removido com sucesso."
-                  data: null
-          "404":
-            description: Artigo não encontrado
-            content:
-              application/json:
-                example:
-                  status: error
-                  message: "Artigo não encontrado."
-                  details: null
+    # Remoção de artigo é feita em /articles/{id} (delete)
   /articles:
     get:
       summary: Lista todos os artigos
@@ -360,35 +306,35 @@ paths:
                   type: string
                 body:
                   type: string
-                categoryId:
-                  type: string
-                userId:
-                  type: string
-      responses:
-        "201":
-          description: Artigo criado
-          content:
-            application/json:
-              example:
-                status: success
-                message: "Artigo criado com sucesso."
-                data:
-                  id: "uuid"
-                  title: "Novo artigo"
-                  body: "Conteúdo do novo artigo"
-                  categoryId: "uuid-category"
-                  userId: "uuid-user"
-  /articles/{id}:
-    put:
-      summary: Edita um artigo existente
-      tags:
-        - Articles
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
+                delete:
+                  summary: Remove uma categoria existente
+                  tags:
+                    - Categories
+                  security:
+                    - bearerAuth: []
+                  parameters:
+                    - in: path
+                      name: id
+                      required: true
+                      schema:
+                        type: string
+                  responses:
+                    "200":
+                      description: Categoria removida com sucesso
+                      content:
+                        application/json:
+                          example:
+                            status: success
+                            message: "Categoria removida com sucesso."
+                            data: null
+                    "404":
+                      description: Categoria não encontrada
+                      content:
+                        application/json:
+                          example:
+                            status: error
+                            message: "Categoria não encontrada."
+                            details: null
               properties:
                 title:
                   type: string
@@ -422,6 +368,12 @@ paths:
       summary: Remove um artigo
       tags:
         - Articles
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: Artigo removido com sucesso
