@@ -40,3 +40,28 @@ export async function createUser(data: Prisma.UserCreateInput) {
   const { password, ...userWithoutPassword } = user;
   return userWithoutPassword;
 }
+
+export async function getAllUsers(page = 1, pageSize = 10) {
+  const skip = (page - 1) * pageSize;
+  const [users, total] = await Promise.all([
+    db.user.findMany({
+      skip,
+      take: pageSize,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    }),
+    db.user.count(),
+  ]);
+  return {
+    items: users,
+    total,
+    page,
+    pageSize,
+  };
+}

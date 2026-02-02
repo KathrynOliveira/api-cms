@@ -8,14 +8,21 @@ export default {
     try {
       const user = await userService.createUser(req.body);
 
-      return success(
-        res,
-        "Usuário criado com sucesso.",
-        user,
-        201,
-      );
+      return success(res, "Usuário criado com sucesso.", user, 201);
     } catch (err: any) {
       return error(res, err.message, err.details, err.status || 500);
+    }
+  },
+
+  // Retorna todos os usuários
+  async getAllUsers(req: Request, res: Response) {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const pageSize = parseInt(req.query.pageSize as string) || 10;
+      const users = await userService.getAllUsers(page, pageSize);
+      return success(res, "Usuários recuperados com sucesso.", users);
+    } catch (error: any) {
+      return error(res, "Erro ao recuperar usuários.", undefined, 500);
     }
   },
 

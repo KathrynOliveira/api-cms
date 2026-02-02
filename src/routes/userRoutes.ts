@@ -14,6 +14,7 @@ router.post(
   handleValidation,
   UserController.createUser,
 );
+router.get("/api/users", UserController.getAllUsers);
 router.get("/api/users/me", UserController.getMe);
 
 export default router;
