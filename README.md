@@ -35,26 +35,24 @@ Uma API RESTful para gerenciamento de usuários, artigos e categorias, com auten
 ### 🔑 Auth
 
 - `POST /api/auth/login` - Login (JWT + cookie)
-- `POST /api/auth/register` - Cadastro de usuário
 
 ### 👤 Usuários
 
-- `GET /api/users` - Listar usuários (ADMIN)
+- `GET /api/users` - Listar usuários (paginação)
 - `GET /api/users/me` - Dados do usuário autenticado
-- `PUT /api/users/:id` - Editar usuário
-- `DELETE /api/users/:id` - Remover usuário
+- `POST /api/users` - Criar usuário
 
 ### 📝 Artigos
 
 - `GET /api/articles` - Listar artigos (paginação)
 - `GET /api/articles/category/:categoryId` - Listar artigos por categoria
 - `POST /api/articles` - Criar artigo (autenticado)
-- `PUT /api/articles/:id` - Editar artigo (ADMIN ou autor)
+- `PUT /api/articles/:id` - Editar artigo (ADMIN ou se for o próprio autor)
 - `DELETE /api/articles/:id` - Remover artigo (ADMIN ou autor)
 
 ### 🏷️ Categorias
 
-- `GET /api/categories` - Listar categorias
+- `GET /api/categories` - Listar categorias (paginação)
 - `POST /api/categories` - Criar categoria (ADMIN)
 - `PUT /api/categories/:id` - Editar categoria (ADMIN)
 - `DELETE /api/categories/:id` - Remover categoria (ADMIN, só se não houver artigos)
