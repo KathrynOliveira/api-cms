@@ -332,10 +332,91 @@ paths:
                 status: error
                 message: "Erro ao editar artigo."
                 details: "Mensagem de erro detalhada"
-    delete:
-      summary: Remove um artigo
+  /articles/category/{categoryId}:
+    get:
+      summary: Lista artigos por categoria
       tags:
         - Articles
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de artigos na categoria especificada
+          content:
+            application/json:
+              example:
+                status: success
+                message: "Artigos da categoria encontrados com sucesso."
+                data:
+                  items:
+                    - id: "uuid"
+                      title: "Artigo na categoria"
+                      slug: "artigo-na-categoria"
+                      body: "Conteúdo do artigo"
+                      categoryId: "uuid-category"
+                      userId: "uuid-user"
+                      cretedAt: "2024-05-01T12:00:00Z"
+                      updatedAt: "2024-05-10T12:00:00Z"
+  /articles/{id}:
+    put:
+      summary: Edita um artigo existente
+      tags:
+        - Articles
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+                categoryId:
+                  type: string
+                userId:
+                  type: string
+      responses:
+        "200":
+          description: Artigo editado com sucesso
+          content:
+            application/json:
+              example:
+                status: success
+                message: "Artigo editado com sucesso."
+                data:
+                  id: "uuid"
+                  title: "Novo título"
+                  body: "Novo conteúdo"
+                  categoryId: "uuid-category"
+                  userId: "uuid-user"
+        "404":
+          description: Artigo não encontrado
+          content:
+            application/json:
+              example:
+                status: error
+                message: "Artigo não encontrado."
+                details: null
+    delete:
+      summary: Remove um artigo existente
+      tags:
+        - Articles
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -351,14 +432,14 @@ paths:
                 status: success
                 message: "Artigo removido com sucesso."
                 data: null
-        "400":
-          description: Erro ao remover artigo
+        "404":
+          description: Artigo não encontrado
           content:
             application/json:
               example:
                 status: error
-                message: "Erro ao remover artigo."
-                details: "Mensagem de erro detalhada"
+                message: "Artigo não encontrado."
+                details: null
 components:
   securitySchemes:
     bearerAuth:
