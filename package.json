@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/app.js",
-    "test": "jest"
+    "test": "jest",
+    "prisma:generate": "prisma generate",
+    "build": "npm run prisma:generate && tsc"
   },
   "keywords": [],
   "author": "",
