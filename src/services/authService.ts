@@ -1,7 +1,7 @@
 import db from "../lib/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import { ApiError } from "../errors/ApiError";
 import { Response } from "express";
 
