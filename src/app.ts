@@ -12,7 +12,6 @@ import path from "path";
 let swaggerDocument;
 try {
   swaggerDocument = YAML.load(path.join(process.cwd(), "swagger.yaml"));
-  console.log("[Swagger] swagger.yaml carregado com sucesso.");
 } catch (err) {
   console.error("[Swagger] Erro ao carregar swagger.yaml:", err);
 }
